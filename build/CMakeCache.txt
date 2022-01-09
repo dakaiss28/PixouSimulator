@@ -323,6 +323,12 @@ PixouSimulator_BINARY_DIR:STATIC=/home/dmallamg/Documents/personal_projects/Pixo
 //Value Computed by CMake
 PixouSimulator_SOURCE_DIR:STATIC=/home/dmallamg/Documents/personal_projects/PixouSimulator
 
+//The directory containing a CMake configuration file for SFML.
+SFML_DIR:PATH=/usr/lib/x86_64-linux-gnu/cmake/SFML
+
+//Path to a file.
+SFML_DOC_DIR:PATH=SFML_DOC_DIR-NOTFOUND
+
 //Name of the computer/site where compile is being run
 SITE:STRING=dmallamg-Swift-SF514-53T
 

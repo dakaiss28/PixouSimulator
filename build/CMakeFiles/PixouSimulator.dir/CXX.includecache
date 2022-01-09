@@ -29,8 +29,6 @@ Reward.hpp
 /home/dmallamg/Documents/personal_projects/PixouSimulator/header/Reward.hpp
 
 /home/dmallamg/Documents/personal_projects/PixouSimulator/main.cpp
-iostream
--
 vector
 -
 stdlib.h
@@ -53,4 +51,26 @@ header/Pixou.hpp
 /home/dmallamg/Documents/personal_projects/PixouSimulator/header/Pixou.hpp
 header/Position.hpp
 /home/dmallamg/Documents/personal_projects/PixouSimulator/header/Position.hpp
+SFML/Graphics.hpp
+-
+
+/home/dmallamg/Documents/personal_projects/PixouSimulator/src/Coin.cpp
+../header/Coin.hpp
+/home/dmallamg/Documents/personal_projects/PixouSimulator/header/Coin.hpp
+../header/Reward.hpp
+/home/dmallamg/Documents/personal_projects/PixouSimulator/header/Reward.hpp
+
+/home/dmallamg/Documents/personal_projects/PixouSimulator/src/Pixou.cpp
+../header/Pixou.hpp
+/home/dmallamg/Documents/personal_projects/PixouSimulator/header/Pixou.hpp
+
+/home/dmallamg/Documents/personal_projects/PixouSimulator/src/Position.cpp
+../header/Position.hpp
+/home/dmallamg/Documents/personal_projects/PixouSimulator/header/Position.hpp
+
+/home/dmallamg/Documents/personal_projects/PixouSimulator/src/Star.cpp
+../header/Star.hpp
+/home/dmallamg/Documents/personal_projects/PixouSimulator/header/Star.hpp
+../header/Reward.hpp
+/home/dmallamg/Documents/personal_projects/PixouSimulator/header/Reward.hpp
 

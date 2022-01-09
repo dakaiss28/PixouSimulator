@@ -139,6 +139,10 @@ PixouSimulator: CMakeFiles/PixouSimulator.dir/src/Position.cpp.o
 PixouSimulator: CMakeFiles/PixouSimulator.dir/src/Coin.cpp.o
 PixouSimulator: CMakeFiles/PixouSimulator.dir/src/Star.cpp.o
 PixouSimulator: CMakeFiles/PixouSimulator.dir/build.make
+PixouSimulator: /usr/lib/x86_64-linux-gnu/libsfml-graphics.so.2.5.1
+PixouSimulator: /usr/lib/x86_64-linux-gnu/libsfml-audio.so.2.5.1
+PixouSimulator: /usr/lib/x86_64-linux-gnu/libsfml-window.so.2.5.1
+PixouSimulator: /usr/lib/x86_64-linux-gnu/libsfml-system.so.2.5.1
 PixouSimulator: CMakeFiles/PixouSimulator.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/dmallamg/Documents/personal_projects/PixouSimulator/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Linking CXX executable PixouSimulator"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/PixouSimulator.dir/link.txt --verbose=$(VERBOSE)
