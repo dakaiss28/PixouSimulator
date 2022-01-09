@@ -1,14 +1,14 @@
-#include "../header/Coin.hpp"
+#include "../header/Star.hpp"
 #include "../header/Reward.hpp"
 
-Coin::Coin(int x)
+Star::Star(int x)
 {
-    _rewards = 5;
-    _speed = 2;
+    _rewards = 10;
+    _speed = 4;
     _position.set_x(x);
 }
 
-void Coin::dropReward()
+void Star::dropReward()
 {
     _position.set_y(_position.y() + _speed);
 }

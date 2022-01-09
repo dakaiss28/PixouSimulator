@@ -1,0 +1,27 @@
+[
+{
+  "directory": "/home/dmallamg/Documents/personal_projects/PixouSimulator/build",
+  "command": "/bin/x86_64-linux-gnu-g++-9    -g   -o CMakeFiles/PixouSimulator.dir/main.cpp.o -c /home/dmallamg/Documents/personal_projects/PixouSimulator/main.cpp",
+  "file": "/home/dmallamg/Documents/personal_projects/PixouSimulator/main.cpp"
+},
+{
+  "directory": "/home/dmallamg/Documents/personal_projects/PixouSimulator/build",
+  "command": "/bin/x86_64-linux-gnu-g++-9    -g   -o CMakeFiles/PixouSimulator.dir/src/Pixou.cpp.o -c /home/dmallamg/Documents/personal_projects/PixouSimulator/src/Pixou.cpp",
+  "file": "/home/dmallamg/Documents/personal_projects/PixouSimulator/src/Pixou.cpp"
+},
+{
+  "directory": "/home/dmallamg/Documents/personal_projects/PixouSimulator/build",
+  "command": "/bin/x86_64-linux-gnu-g++-9    -g   -o CMakeFiles/PixouSimulator.dir/src/Position.cpp.o -c /home/dmallamg/Documents/personal_projects/PixouSimulator/src/Position.cpp",
+  "file": "/home/dmallamg/Documents/personal_projects/PixouSimulator/src/Position.cpp"
+},
+{
+  "directory": "/home/dmallamg/Documents/personal_projects/PixouSimulator/build",
+  "command": "/bin/x86_64-linux-gnu-g++-9    -g   -o CMakeFiles/PixouSimulator.dir/src/Coin.cpp.o -c /home/dmallamg/Documents/personal_projects/PixouSimulator/src/Coin.cpp",
+  "file": "/home/dmallamg/Documents/personal_projects/PixouSimulator/src/Coin.cpp"
+},
+{
+  "directory": "/home/dmallamg/Documents/personal_projects/PixouSimulator/build",
+  "command": "/bin/x86_64-linux-gnu-g++-9    -g   -o CMakeFiles/PixouSimulator.dir/src/Star.cpp.o -c /home/dmallamg/Documents/personal_projects/PixouSimulator/src/Star.cpp",
+  "file": "/home/dmallamg/Documents/personal_projects/PixouSimulator/src/Star.cpp"
+}
+]
