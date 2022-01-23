@@ -4,10 +4,14 @@ project(PixouSimulator VERSION 0.1.0)
 include(CTest)
 enable_testing()
 
+
+find_package(SFML 2.5 COMPONENTS system window graphics audio REQUIRED)
+
 add_executable(PixouSimulator 
-                header/Pixou.hpp header/Position.hpp header/Coin.hpp header/Star.hpp header/Reward.hpp
-                main.cpp src/Pixou.cpp src/Position.cpp src/Coin.cpp src/Star.cpp )
+                header/Pixou.hpp header/Position.hpp header/Reward.hpp header/Game.hpp
+                main.cpp src/Pixou.cpp src/Position.cpp src/Reward.cpp  src/Game.cpp)
 
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
 include(CPack)
+target_link_libraries(PixouSimulator sfml-system sfml-window sfml-graphics sfml-audio)
