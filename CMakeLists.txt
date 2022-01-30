@@ -8,8 +8,8 @@ enable_testing()
 find_package(SFML 2.5 COMPONENTS system window graphics audio REQUIRED)
 
 add_executable(PixouSimulator 
-                header/Pixou.hpp header/Position.hpp header/Reward.hpp header/Game.hpp
-                main.cpp src/Pixou.cpp src/Position.cpp src/Reward.cpp  src/Game.cpp)
+                header/Pixou.hpp header/Position.hpp header/Reward.hpp header/Game.hpp header/Cell.hpp header/State.hpp
+                main.cpp src/Pixou.cpp src/Position.cpp src/Reward.cpp  src/Game.cpp src/Cell.cpp src/State.cpp)
 
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
