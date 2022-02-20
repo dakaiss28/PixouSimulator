@@ -22,44 +22,45 @@ using namespace sf;
 class Game
 {
 private:
-    //Variables
+    // Variables
     RenderWindow *window;
     Event event;
     VideoMode videoMode;
+    int windowSize;
 
     // Game logic
     float rewardsTimer;
     float rewardsTimerMax;
     int maxRewards;
 
-    //Qlearning Implementation
-    vector<Cell> cells;
-    map<int, State> states;
-    int nbStates;
+    // Qlearning Implementation
 
-    vector<vector<float>> qTable;
+    map<State, int> states;
+    int nbStates;
+    int currentStateId;
+    double epsilon;
+    map<int, array<double, 3>> table;
 
     // Text
 
     Text text;
 
-    //sf::Font font;
+    Font font;
 
     Pixou *pixou;
     vector<Reward> rewards;
-    //set<State> states;
 
-    //Functions
+    // Functions
 
     void initVar();
     void initWindow();
-    void initRewards();
+    // void initRewards();
 
     int specificAction();
     int randomAction();
-    void updateQtable(float alpha, float gamm);
+    void updateQtable(float alpha, float gamma, float epsilon);
 
-    void initCells();
+    // void initCells();
     void initText();
     bool intersectRectangles(RectangleShape a, RectangleShape b);
 
@@ -72,7 +73,7 @@ public:
     void update();
     void updateRewards();
     void spawnRewards();
-    void updateStates();
+    int updateStates();
     void updatePixou(int mvt);
     void pollEvents();
     void renderRewards();

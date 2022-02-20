@@ -18,9 +18,10 @@ void Pixou::updatePoints(int points)
     _points += points;
 }
 
-void Pixou::movePixou(int dir)
+void Pixou::movePixou(int mvt)
 {
-    int sp = dir * _speed;
+
+    int sp = (mvt - 1) * _speed;
     _position.set_x(_position.x() + sp);
     pixouViz.move(Vector2f(static_cast<float>(sp), 0.f));
 }

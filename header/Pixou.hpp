@@ -26,7 +26,7 @@ public:
     string name() const;
     Position position() const;
     RectangleShape visu();
-    ~Pixou();
+    ~Pixou() = default;
 };
 
 inline int Pixou::points() const { return _points; }
