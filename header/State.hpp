@@ -17,7 +17,7 @@ private:
     pair<int, int> pixouCell;
 
 public:
-    State(vector<Reward> rewards, Pixou pixou);
+    State(vector<Reward> rewards, Pixou pixou, int N);
     bool operator==(State &a);
     bool operator<(const State &a) const;
 };

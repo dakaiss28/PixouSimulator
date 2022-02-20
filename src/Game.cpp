@@ -3,7 +3,12 @@
 void Game::initVar()
 {
     window = nullptr;
-    windowSize = 100;
+    windowSize = 1000;
+    cellSize = 10;
+    if (!font.loadFromFile("OpenSans-Regular.ttf"))
+    {
+        cout << "Error while loading font " << endl;
+    }
     text.setFont(font);
     text.setPosition(Vector2f(50, 50));
 
@@ -50,19 +55,17 @@ void Game::updateQtable(float alpha, float gamma, float epsilon)
     }
 
     // action based on Q-table
+
     else
     {
         // Get action index with max value in qtable at table[currentStateId]
-        int action = distance(table[state1Id].begin(), max_element(table[state1Id].begin(), table[state1Id].end()));
+        action = distance(table[state1Id].begin(), max_element(table[state1Id].begin(), table[state1Id].end()));
     }
-
     // do the action -> updatePixou
     updatePixou(action);
 
-    updateRewards();
-
-    // reward =  difference scorePixou between current state and new state
-    int reward = pixou->points() - currentScore;
+    // get reward
+    int reward = updateRewards();
 
     //  get new state and updatecurrentState
     int state2Id = updateStates();
@@ -70,13 +73,10 @@ void Game::updateQtable(float alpha, float gamma, float epsilon)
     //  update Q-table with bellman-equation ( with currentState and newState)
 
     table[state1Id][action] += alpha * (reward + (gamma * *max_element(table[state2Id].begin(), table[state2Id].end())) - table[state1Id][action]);
-
-    // reduce epsilon
-    epsilon -= 0.1;
 }
 int Game::randomAction()
 {
-    return rand() % 3 - 1;
+    return rand() % 3;
 }
 
 Game::Game()
@@ -114,12 +114,16 @@ void Game::update()
     pollEvents();
     // updateRewards();
     // updateStates();
-    updateQtable(0.2, 0.9, 0.8);
+    updateQtable(0.2, 0.9, epsilon);
+
+    // reduce epsilon
+    epsilon -= 0.001;
     // updatePixou(randomAction());
 }
 
-void Game::updateRewards()
+int Game::updateRewards()
 {
+    int reward = 0;
     if (rewards.size() < maxRewards)
     {
         if (rewardsTimer >= rewardsTimerMax)
@@ -142,22 +146,29 @@ void Game::updateRewards()
         if (intersectRectangles(rewards[i].visu(), pixou->visu()))
         {
             deleted = true;
-            pixou->updatePoints(rewards[i].rewards());
+            reward += rewards[i].rewards();
         }
 
         // check if reward out of screen
 
-        if (rewards[i].visu().getPosition().y > window->getSize().y)
+        else if (rewards[i].visu().getPosition().y > window->getSize().y)
         {
             deleted = true;
-            pixou->updatePoints(-rewards[i].rewards());
+            reward -= rewards[i].rewards();
+        }
+
+        else
+        {
+            reward += 1;
         }
 
         if (deleted)
         {
             rewards.erase(rewards.begin() + i);
         }
+        pixou->updatePoints(reward);
     }
+    return reward;
 }
 
 void Game::spawnRewards()
@@ -175,7 +186,7 @@ void Game::spawnRewards()
 int Game::updateStates()
 {
 
-    State currentState(rewards, *pixou);
+    State currentState(rewards, *pixou, cellSize);
 
     if (states.find(currentState) == states.end())
     {
@@ -191,14 +202,14 @@ int Game::updateStates()
     return currentStateId;
 }
 
-// TO DO rearanger mouvements de pixou pour qu'il ne soit pas en dehors de la fenetre !!!!!!!!!!
+// TO DO : see why Pixou gets out of window !!!!!!!!!!!!!!!!!!!!!!!
 void Game::updatePixou(int mvt)
 {
     pixou->movePixou(mvt);
     float y = pixou->visu().getPosition().y;
-    if (pixou->visu().getPosition().x > window->getPosition().x)
+    if (pixou->visu().getPosition().x > window->getSize().x)
     {
-        pixou->visu().setPosition(window->getPosition().x, y);
+        pixou->visu().setPosition(window->getSize().x, y);
     }
     if (pixou->visu().getPosition().x < 0)
     {
@@ -218,6 +229,8 @@ void Game::renderPixou()
 {
     window->draw(pixou->visu());
     text.setString(to_string(pixou->points()));
+    text.setCharacterSize(24);
+    text.setFillColor(Color::White);
     window->draw(text);
 }
 
@@ -228,7 +241,5 @@ void Game::render()
     // Draw game
     renderRewards();
     renderPixou();
-    cout << pixou->points() << endl;
-    cout << pixou->visu().getPosition().x << "  " << pixou->visu().getPosition().y << endl;
     window->display();
 }

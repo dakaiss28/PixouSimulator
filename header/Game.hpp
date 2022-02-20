@@ -27,6 +27,7 @@ private:
     Event event;
     VideoMode videoMode;
     int windowSize;
+    int cellSize;
 
     // Game logic
     float rewardsTimer;
@@ -71,7 +72,7 @@ public:
     bool running() const;
 
     void update();
-    void updateRewards();
+    int updateRewards();
     void spawnRewards();
     int updateStates();
     void updatePixou(int mvt);
