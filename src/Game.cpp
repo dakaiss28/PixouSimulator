@@ -1,5 +1,6 @@
 #include "../header/Game.hpp"
 
+// TODO : see how the qtable is filled !!
 void Game::initVar()
 {
     window = nullptr;
@@ -48,8 +49,10 @@ void Game::updateQtable(float alpha, float gamma, float epsilon)
     // current state stocké dans currentStateId
     int state1Id = currentStateId;
 
+    float r = static_cast<float>(rand()) / static_cast<float>(RAND_MAX); // rand float between 0 and 1
+
     // exploratory : we perform a random action
-    if (epsilon > 0.6)
+    if (r < epsilon)
     {
         action = randomAction();
     }
@@ -65,6 +68,7 @@ void Game::updateQtable(float alpha, float gamma, float epsilon)
     updatePixou(action);
 
     // get reward
+
     int reward = updateRewards();
 
     //  get new state and updatecurrentState
@@ -118,7 +122,6 @@ void Game::update()
 
     // reduce epsilon
     epsilon -= 0.001;
-    // updatePixou(randomAction());
 }
 
 int Game::updateRewards()
@@ -146,7 +149,8 @@ int Game::updateRewards()
         if (intersectRectangles(rewards[i].visu(), pixou->visu()))
         {
             deleted = true;
-            reward += rewards[i].rewards();
+            reward += 50;
+            pixou->updatePoints(rewards[i].rewards());
         }
 
         // check if reward out of screen
@@ -154,20 +158,16 @@ int Game::updateRewards()
         else if (rewards[i].visu().getPosition().y > window->getSize().y)
         {
             deleted = true;
-            reward -= rewards[i].rewards();
-        }
-
-        else
-        {
-            reward += 1;
+            reward -= 100;
+            pixou->updatePoints(-rewards[i].rewards());
         }
 
         if (deleted)
         {
             rewards.erase(rewards.begin() + i);
         }
-        pixou->updatePoints(reward);
     }
+
     return reward;
 }
 
@@ -179,7 +179,7 @@ void Game::spawnRewards()
 }
 
 /**
- * @brief analyse the window and crete a state. If configuration already exists in qtable, just get id of the state
+ * @brief analyse the window and create a state. If configuration already exists in qtable, just get id of the state
  * else : add state in qtable and then update id of current state and nb of states.
  *
  */
@@ -190,11 +190,13 @@ int Game::updateStates()
 
     if (states.find(currentState) == states.end())
     {
+
         states.insert(pair<State, int>(currentState, nbStates));
         nbStates++;
         currentStateId = nbStates - 1;
         table.insert(pair<int, array<double, 3>>(currentStateId, {0.0, 0.0, 0.0}));
     }
+
     else
     {
         currentStateId = states[currentState];
@@ -202,18 +204,14 @@ int Game::updateStates()
     return currentStateId;
 }
 
-// TO DO : see why Pixou gets out of window !!!!!!!!!!!!!!!!!!!!!!!
 void Game::updatePixou(int mvt)
 {
-    pixou->movePixou(mvt);
-    float y = pixou->visu().getPosition().y;
-    if (pixou->visu().getPosition().x > window->getSize().x)
+
+    int speed = pixou->getSpeed();
+    int newPosX = pixou->visu().getPosition().x + speed;
+    if (newPosX > 0 && newPosX < window->getSize().x)
     {
-        pixou->visu().setPosition(window->getSize().x, y);
-    }
-    if (pixou->visu().getPosition().x < 0)
-    {
-        pixou->visu().setPosition(0, y);
+        pixou->movePixou(mvt);
     }
 }
 
@@ -241,5 +239,6 @@ void Game::render()
     // Draw game
     renderRewards();
     renderPixou();
+
     window->display();
 }

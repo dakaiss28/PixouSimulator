@@ -8,6 +8,7 @@
 #include "Reward.hpp"
 #include "Pixou.hpp"
 
+#include <iostream>
 using namespace std;
 
 class State
@@ -18,11 +19,13 @@ private:
 
 public:
     State(vector<Reward> rewards, Pixou pixou, int N);
-    bool operator==(State &a);
+    bool operator==(const State &a);
     bool operator<(const State &a) const;
+    vector<pair<int, int>> getrewardsCells();
+    pair<int, int> getpixouCell();
 };
 
-inline bool State::operator==(State &a)
+inline bool State::operator==(const State &a)
 {
     return a.pixouCell == pixouCell && std::equal(a.rewardsCells.begin(), a.rewardsCells.end(), rewardsCells.begin());
 }
@@ -30,6 +33,16 @@ inline bool State::operator==(State &a)
 inline bool State::operator<(const State &a) const
 {
     return a.pixouCell < pixouCell;
+}
+
+inline pair<int, int> State::getpixouCell()
+{
+    return pixouCell;
+}
+
+inline vector<pair<int, int>> State::getrewardsCells()
+{
+    return rewardsCells;
 }
 
 #endif
