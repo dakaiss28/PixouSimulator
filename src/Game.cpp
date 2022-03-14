@@ -1,11 +1,11 @@
 #include "../header/Game.hpp"
 
-// TODO : see how the qtable is filled !!
+// TODO : voir pb au niveau des states ! ( states ne changent pas tout le temps, why ?? )
 void Game::initVar()
 {
     window = nullptr;
     windowSize = 1000;
-    cellSize = 10;
+    cellSize = 50;
     if (!font.loadFromFile("OpenSans-Regular.ttf"))
     {
         cout << "Error while loading font " << endl;
@@ -62,6 +62,7 @@ void Game::updateQtable(float alpha, float gamma, float epsilon)
     else
     {
         // Get action index with max value in qtable at table[currentStateId]
+
         action = distance(table[state1Id].begin(), max_element(table[state1Id].begin(), table[state1Id].end()));
     }
     // do the action -> updatePixou
@@ -76,6 +77,9 @@ void Game::updateQtable(float alpha, float gamma, float epsilon)
 
     //  update Q-table with bellman-equation ( with currentState and newState)
 
+    /// cout << " reward = " << table[state1Id][action] << " + " << alpha << " * " << (gamma * *max_element(table[state2Id].begin(), table[state2Id].end())) << endl;
+    cout << " scores for state " << state1Id << " : " << table[state1Id][0] << "  " << table[state1Id][1] << " " << table[state1Id][2] << endl;
+    cout << "action : " << action << endl;
     table[state1Id][action] += alpha * (reward + (gamma * *max_element(table[state2Id].begin(), table[state2Id].end())) - table[state1Id][action]);
 }
 int Game::randomAction()

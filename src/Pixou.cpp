@@ -7,7 +7,7 @@ Pixou::Pixou(string name, int pts, float x, float y)
     _points = pts;
     _position.set_x(x);
     _position.set_y(y);
-    _speed = 4;
+    _speed = 10;
     pixouViz.setPosition(Vector2f(x, y));
 
     pixouViz.setSize(Vector2f(150.f, 150.f));

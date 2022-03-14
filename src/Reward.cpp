@@ -3,7 +3,7 @@
 Reward::Reward(int x)
 {
     _rewards = 5;
-    _speed = 2;
+    _speed = 20;
     _position.set_x(x);
 
     _visu.setPosition(Vector2f(static_cast<float>(x), 0.f));
