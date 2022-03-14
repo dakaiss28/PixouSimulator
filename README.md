@@ -1,7 +1,7 @@
 # PixouSimulator
 
 Pixou loves coins ! he found himself stuck in a room with coins randomly falling from the ceiling.   
-Now he wants to collect the maximum amount of coins he can.   
+Now he wants to collect as many coins as he can.   
 
 ## Game Logic
 Pixou Simulator is a 2D game developped with C++ and SFML library.      
