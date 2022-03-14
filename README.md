@@ -23,3 +23,5 @@ A state gives the positions of the coins and pixou. The reduce the number of cel
 The Q-table is dynamic, we add a line every time we have a state never seen before.   
 The algorithm uses an epsilon-greed method to fill in the Q table.   
 At the beginning of the game, Pixou will do a lot of random actions to discover it's environment. Later on, Pixou uses the Q-table to find the best action to do.   
+
+Pixou performs better but some parameters can be tuned : pixou's speed, the coins'speed and the size of the grid representing the grid. 

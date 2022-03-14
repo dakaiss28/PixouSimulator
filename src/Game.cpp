@@ -1,6 +1,5 @@
 #include "../header/Game.hpp"
 
-// TODO : voir pb au niveau des states ! ( states ne changent pas tout le temps, why ?? )
 void Game::initVar()
 {
     window = nullptr;
@@ -153,7 +152,7 @@ int Game::updateRewards()
         if (intersectRectangles(rewards[i].visu(), pixou->visu()))
         {
             deleted = true;
-            reward += 50;
+            reward += 500;
             pixou->updatePoints(rewards[i].rewards());
         }
 
@@ -164,6 +163,15 @@ int Game::updateRewards()
             deleted = true;
             reward -= 100;
             pixou->updatePoints(-rewards[i].rewards());
+        }
+
+        if (pixou->visu().getPosition().x < 0 || pixou->visu().getPosition().x > windowSize)
+        {
+            reward -= 1000;
+        }
+        else
+        {
+            reward += 1;
         }
 
         if (deleted)
@@ -211,12 +219,7 @@ int Game::updateStates()
 void Game::updatePixou(int mvt)
 {
 
-    int speed = pixou->getSpeed();
-    int newPosX = pixou->visu().getPosition().x + speed;
-    if (newPosX > 0 && newPosX < window->getSize().x)
-    {
-        pixou->movePixou(mvt);
-    }
+    pixou->movePixou(mvt);
 }
 
 void Game::renderRewards()

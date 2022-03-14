@@ -32,7 +32,7 @@ inline bool State::operator==(const State &a)
 
 inline bool State::operator<(const State &a) const
 {
-    return a.pixouCell < pixouCell;
+    return a.pixouCell > pixouCell && !std::equal(a.rewardsCells.begin(), a.rewardsCells.end(), rewardsCells.begin());
 }
 
 inline pair<int, int> State::getpixouCell()
