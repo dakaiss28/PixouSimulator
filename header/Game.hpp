@@ -8,8 +8,12 @@
 #include <SFML/Network.hpp>
 #include <iostream>
 #include <vector>
+#include <set>
+#include <map>
 #include "Reward.hpp"
 #include "Pixou.hpp"
+#include "Cell.hpp"
+#include "State.hpp"
 
 using namespace std;
 
@@ -18,30 +22,46 @@ using namespace sf;
 class Game
 {
 private:
-    //Variables
+    // Variables
     RenderWindow *window;
     Event event;
     VideoMode videoMode;
+    int windowSize;
+    int cellSize;
 
     // Game logic
     float rewardsTimer;
     float rewardsTimerMax;
     int maxRewards;
 
+    // Qlearning Implementation
+
+    map<State, int> states;
+    int nbStates;
+    int currentStateId;
+    double epsilon;
+    map<int, array<double, 3>> table;
+
     // Text
 
     Text text;
 
-    //sf::Font font;
+    Font font;
 
     Pixou *pixou;
     vector<Reward> rewards;
 
-    //Functions
+    // Functions
 
     void initVar();
     void initWindow();
-    void initRewards();
+    // void initRewards();
+
+    int specificAction();
+    int randomAction();
+    void updateQtable(float alpha, float gamma, float epsilon);
+
+    // void initCells();
     void initText();
     bool intersectRectangles(RectangleShape a, RectangleShape b);
 
@@ -52,9 +72,10 @@ public:
     bool running() const;
 
     void update();
-    void updateRewards();
+    int updateRewards();
     void spawnRewards();
-    void updatePixou();
+    int updateStates();
+    void updatePixou(int mvt);
     void pollEvents();
     void renderRewards();
     void renderPixou();

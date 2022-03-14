@@ -23,15 +23,17 @@ public:
     void movePixou(int dir);
     void updatePoints(int upd);
     int points() const;
+    int getSpeed() const;
     string name() const;
     Position position() const;
     RectangleShape visu();
-    ~Pixou();
+    ~Pixou() = default;
 };
 
 inline int Pixou::points() const { return _points; }
 inline string Pixou::name() const { return _name; }
 inline Position Pixou::position() const { return _position; }
 inline RectangleShape Pixou::visu() { return pixouViz; }
+inline int Pixou::getSpeed() const { return _speed; }
 
 #endif

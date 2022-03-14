@@ -5,8 +5,8 @@ Pixou::Pixou(string name, int pts, float x, float y)
 {
     _name = name;
     _points = pts;
-    _position.set_x(50);
-    _position.set_y(100);
+    _position.set_x(x);
+    _position.set_y(y);
     _speed = 5;
     pixouViz.setPosition(Vector2f(x, y));
 
@@ -18,9 +18,10 @@ void Pixou::updatePoints(int points)
     _points += points;
 }
 
-void Pixou::movePixou(int dir)
+void Pixou::movePixou(int mvt)
 {
-    int sp = dir * _speed;
+
+    int sp = (mvt - 1) * _speed;
     _position.set_x(_position.x() + sp);
     pixouViz.move(Vector2f(static_cast<float>(sp), 0.f));
 }

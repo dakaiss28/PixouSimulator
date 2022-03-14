@@ -3,10 +3,22 @@
 void Game::initVar()
 {
     window = nullptr;
+    windowSize = 1000;
+    cellSize = 50;
+    if (!font.loadFromFile("OpenSans-Regular.ttf"))
+    {
+        cout << "Error while loading font " << endl;
+    }
+    text.setFont(font);
+    text.setPosition(Vector2f(50, 50));
+
     // Game logic
     rewardsTimerMax = 10.f;
     rewardsTimer = rewardsTimerMax;
     maxRewards = 5;
+    nbStates = 0;
+    currentStateId = 0;
+    epsilon = 0.8;
 }
 
 void Game::initWindow()
@@ -16,11 +28,8 @@ void Game::initWindow()
 
     window->setFramerateLimit(60);
     window->setPosition(Vector2i(500, 500));
+    window->setSize(Vector2u(windowSize, windowSize));
     pixou = new Pixou("myPixou", 0, window->getSize().x / 2, window->getSize().y - 150);
-}
-
-void Game::initRewards()
-{
 }
 
 bool Game::intersectRectangles(RectangleShape a, RectangleShape b)
@@ -31,11 +40,58 @@ bool Game::intersectRectangles(RectangleShape a, RectangleShape b)
            a.getPosition().y + a.getSize().y >= b.getPosition().y;
 }
 
+void Game::updateQtable(float alpha, float gamma, float epsilon)
+{
+
+    int action;
+    int currentScore = pixou->points();
+    // current state stocké dans currentStateId
+    int state1Id = currentStateId;
+
+    float r = static_cast<float>(rand()) / static_cast<float>(RAND_MAX); // rand float between 0 and 1
+
+    // exploratory : we perform a random action
+    if (r < epsilon)
+    {
+        action = randomAction();
+    }
+
+    // action based on Q-table
+
+    else
+    {
+        // Get action index with max value in qtable at table[currentStateId]
+
+        action = distance(table[state1Id].begin(), max_element(table[state1Id].begin(), table[state1Id].end()));
+    }
+    // do the action -> updatePixou
+    updatePixou(action);
+
+    // get reward
+
+    int reward = updateRewards();
+
+    //  get new state and updatecurrentState
+    int state2Id = updateStates();
+
+    //  update Q-table with bellman-equation ( with currentState and newState)
+
+    /// cout << " reward = " << table[state1Id][action] << " + " << alpha << " * " << (gamma * *max_element(table[state2Id].begin(), table[state2Id].end())) << endl;
+    cout << " scores for state " << state1Id << " : " << table[state1Id][0] << "  " << table[state1Id][1] << " " << table[state1Id][2] << endl;
+    cout << "action : " << action << endl;
+    table[state1Id][action] += alpha * (reward + (gamma * *max_element(table[state2Id].begin(), table[state2Id].end())) - table[state1Id][action]);
+}
+int Game::randomAction()
+{
+    return rand() % 3;
+}
+
 Game::Game()
 {
     initVar();
     initWindow();
-    initRewards();
+    // initCells();
+    // initRewards();
 }
 
 Game::~Game()
@@ -63,12 +119,17 @@ void Game::pollEvents()
 void Game::update()
 {
     pollEvents();
-    updateRewards();
-    updatePixou();
+    // updateRewards();
+    // updateStates();
+    updateQtable(0.2, 0.9, epsilon);
+
+    // reduce epsilon
+    epsilon -= 0.001;
 }
 
-void Game::updateRewards()
+int Game::updateRewards()
 {
+    int reward = 0;
     if (rewards.size() < maxRewards)
     {
         if (rewardsTimer >= rewardsTimerMax)
@@ -91,15 +152,26 @@ void Game::updateRewards()
         if (intersectRectangles(rewards[i].visu(), pixou->visu()))
         {
             deleted = true;
+            reward += 500;
             pixou->updatePoints(rewards[i].rewards());
         }
 
         // check if reward out of screen
 
-        if (rewards[i].visu().getPosition().y > window->getSize().y)
+        else if (rewards[i].visu().getPosition().y > window->getSize().y)
         {
             deleted = true;
+            reward -= 100;
             pixou->updatePoints(-rewards[i].rewards());
+        }
+
+        if (pixou->visu().getPosition().x < 0 || pixou->visu().getPosition().x > windowSize)
+        {
+            reward -= 1000;
+        }
+        else
+        {
+            reward += 1;
         }
 
         if (deleted)
@@ -107,6 +179,8 @@ void Game::updateRewards()
             rewards.erase(rewards.begin() + i);
         }
     }
+
+    return reward;
 }
 
 void Game::spawnRewards()
@@ -116,19 +190,36 @@ void Game::spawnRewards()
     rewards.push_back(Reward(pos));
 }
 
-void Game::updatePixou()
+/**
+ * @brief analyse the window and create a state. If configuration already exists in qtable, just get id of the state
+ * else : add state in qtable and then update id of current state and nb of states.
+ *
+ */
+int Game::updateStates()
 {
-    int mvt = rand() % 3 - 1;
+
+    State currentState(rewards, *pixou, cellSize);
+
+    if (states.find(currentState) == states.end())
+    {
+
+        states.insert(pair<State, int>(currentState, nbStates));
+        nbStates++;
+        currentStateId = nbStates - 1;
+        table.insert(pair<int, array<double, 3>>(currentStateId, {0.0, 0.0, 0.0}));
+    }
+
+    else
+    {
+        currentStateId = states[currentState];
+    }
+    return currentStateId;
+}
+
+void Game::updatePixou(int mvt)
+{
+
     pixou->movePixou(mvt);
-    float y = pixou->visu().getPosition().y;
-    if (pixou->visu().getPosition().x > window->getPosition().x)
-    {
-        pixou->visu().setPosition(window->getPosition().x, y);
-    }
-    if (pixou->visu().getPosition().x < 0)
-    {
-        pixou->visu().setPosition(0, y);
-    }
 }
 
 void Game::renderRewards()
@@ -142,15 +233,19 @@ void Game::renderRewards()
 void Game::renderPixou()
 {
     window->draw(pixou->visu());
+    text.setString(to_string(pixou->points()));
+    text.setCharacterSize(24);
+    text.setFillColor(Color::White);
+    window->draw(text);
 }
 
 void Game::render()
 {
     window->clear();
 
-    //Draw game
+    // Draw game
     renderRewards();
     renderPixou();
-    cout << pixou->points() << endl;
+
     window->display();
 }
