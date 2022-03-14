@@ -15,10 +15,10 @@ In the virst version, Pixou only does random actions. He performs really poorly.
 ### Q-learning version
 To collect as many coins as possible, Pixou is trained by reinforcement, with the Q learning algorithm. 
 
-### States
+#### States
 A state gives the positions of the coins and pixou. The reduce the number of cells, the screen is divided in a grid. For each game element, we store in the state the id of the grid the element is into.  
 
-### Q learning algorithm
+#### Q learning algorithm
   
 The Q-table is dynamic, we add a line every time we have a state never seen before.   
 The algorithm uses an epsilon-greed method to fill in the Q table.   
