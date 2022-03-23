@@ -4,7 +4,7 @@ void Game::initVar()
 {
     window = nullptr;
     windowSize = 1000;
-    cellSize = 50;
+    cellSize = 250;
     if (!font.loadFromFile("OpenSans-Regular.ttf"))
     {
         cout << "Error while loading font " << endl;
@@ -165,15 +165,16 @@ int Game::updateRewards()
             pixou->updatePoints(-rewards[i].rewards());
         }
 
+        // if Pixou gets out of the window
         if (pixou->visu().getPosition().x < 0 || pixou->visu().getPosition().x > windowSize)
         {
             reward -= 1000;
         }
-        else
-        {
-            reward += 1;
-        }
-
+        /* else
+         {
+             reward += 1;
+         }
+ */
         if (deleted)
         {
             rewards.erase(rewards.begin() + i);
@@ -198,7 +199,7 @@ void Game::spawnRewards()
 int Game::updateStates()
 {
 
-    State currentState(rewards, *pixou, cellSize);
+    State currentState(rewards, *pixou, windowSize, cellSize);
 
     if (states.find(currentState) == states.end())
     {
@@ -246,6 +247,7 @@ void Game::render()
     // Draw game
     renderRewards();
     renderPixou();
+    cout << nbStates << endl;
 
     window->display();
 }
